@@ -20,6 +20,8 @@ namespace CustomControls {
         string filePath;
         string fileNameConfig;
 
+        SaveAndLoad sal = new SaveAndLoad();
+
         public override void OnInspectorGUI()
         {
             CustomControls myTarget = (CustomControls)target;
@@ -39,20 +41,26 @@ namespace CustomControls {
                 EditorGUILayout.HelpBox(errorCode, MessageType.Error);
 
             if (GUILayout.Button("Add Key")){
+                if (!sal.FileExists(myTarget.file))
+                    sal.CreateFile(myTarget.file);
 
                 // Check if there is a Key Name
                 if (currentKeyName != "" & currentKeyName != " " && currentKeyName != null) {
 
+                    KeyCode primKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), primaryKey);
+
                     // Check if Primary Key is valid
-                    if (myTarget.isKey(primaryKey))
+                    if (myTarget.isKey(primKeyCode))
                     {
                         // Check if there's a Secondary Key
                         if (secondaryKey != null && secondaryKey != "" && secondaryKey != " ")
                         {
+                            KeyCode secKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), secondaryKey);
+
                             // Check if the Secondary Key is valid
-                            if (myTarget.isKey(secondaryKey))
+                            if (myTarget.isKey(secKeyCode))
                             {
-                                myTarget.AddKey(currentKeyName, primaryKey, secondaryKey);
+                                myTarget.AddKey(currentKeyName, primKeyCode, secKeyCode);
 
                                 error = false;
                             }
@@ -65,7 +73,7 @@ namespace CustomControls {
                         // No Secondary Key, add with only one
                         else
                         {
-                            myTarget.AddKey(currentKeyName, primaryKey);
+                            myTarget.AddKey(currentKeyName, primKeyCode);
                             error = false;
                         }
                     }
@@ -91,6 +99,9 @@ namespace CustomControls {
 
             if (GUILayout.Button("Import Config"))
             {
+                if (!sal.FileExists(myTarget.file))
+                    sal.CreateFile(myTarget.file);
+
                 if (filePath != "" && filePath != null)
                 {
                     if (fileNameConfig != "" && fileNameConfig != null)

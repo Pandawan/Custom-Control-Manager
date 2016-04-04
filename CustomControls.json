@@ -4,6 +4,10 @@
     "Fire": {
       "primary": "Return",
       "secondary": "Space"
+    },
+    "test": {
+      "primary": "Return",
+      "secondary": "Space"
     }
   }
 }

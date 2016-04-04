@@ -7,6 +7,8 @@ using System;
 
     --------------------------------
 
+    You can check out the GitHub here https://github.com/PandawanFr/Custom-Control-Manager/
+
     This script is the same as Unity's input manager, but better, you can modify it in real time, and has a lot of features that the default should have. 
 
     This is made under the MIT license.
@@ -24,7 +26,7 @@ using System;
     You can change the name of the file where it will save the controls using the file variable.
     Note, the file will save in the default dataPath. You can learn more about dataPath here http://docs.unity3d.com/ScriptReference/Application-dataPath.html
 
-    For info on API use, please look here 
+    For info on API use, please look here https://github.com/PandawanFr/Custom-Control-Manager/wiki
 **/
 
 
@@ -37,11 +39,18 @@ namespace CustomControls
         [Tooltip("This is the file's name where all you controls will be saved.  You do not need to add .json at the end!")]
         public string file = "CustomControls";
 
+
         void Start()
         {
+            sal.fullPath = Application.dataPath + "/";
+
             // Check if file exists
             if (!sal.FileExists(file))
                 sal.CreateFile(file);
+
+
+            AddKey("test", KeyCode.Return, KeyCode.Space);
+
         }
 
         /// <summary>
@@ -79,7 +88,7 @@ namespace CustomControls
         }
 
         // Returns true if the key is a correct KeyCode
-        public bool isKey (string key)
+        public bool isKey (KeyCode key)
         {
             //KeyCode thisKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), key);
 
@@ -182,16 +191,15 @@ namespace CustomControls
         /// <param name="fileName"> Name of JSON File</param>
         /// <param name="keyName"> Name of the Key (e.i. Fire)</param>
         /// <param name="primaryKey"> Primary Key to use</param>
-        public void AddKey (string keyName, string primaryKey)
+        public void AddKey (string keyName, KeyCode primaryKey)
         {
             if (!sal.KeyExists(file, keyName))
             {
-                // Checks if the primary key is valid
                 if (isKey(primaryKey))
                 {
+                    // Checks if the primary key is valid
                     sal.CreateNodeKey(file, keyName, primaryKey, "add");
-                }
-                else
+                }else
                 {
                     Log("Primary Key is not valid!", "error");
                 }
@@ -209,7 +217,7 @@ namespace CustomControls
         /// <param name="keyName"> Name of the Key (e.i. Fire)</param>
         /// <param name="primaryKey"> Primary Key to use</param>
         /// <param name="secondaryKey"> (Optional) Secondary key</param>
-        public void AddKey(string keyName, string primaryKey, string secondaryKey)
+        public void AddKey(string keyName, KeyCode primaryKey, KeyCode secondaryKey)
         {
             if (!sal.KeyExists(file, keyName))
             {
@@ -217,7 +225,7 @@ namespace CustomControls
                 if (isKey(primaryKey))
                 {
                     // Checks if the secondary key is valid
-                    if (secondaryKey != "" && isKey(secondaryKey))
+                    if (isKey(secondaryKey))
                     {
                         sal.CreateNodeKey(file, keyName, primaryKey, secondaryKey, "add");
                     }
@@ -243,7 +251,7 @@ namespace CustomControls
         /// <param name="fileName"> Name of JSON File</param>
         /// <param name="keyName"> Name of the Key (e.i. Fire)</param>
         /// <param name="primaryKey"> Primary Key to use</param>
-        public void ChangeKey (string keyName, string primaryKey)
+        public void ChangeKey (string keyName, KeyCode primaryKey)
         {
             if (sal.KeyExists(file, keyName))
             {
@@ -270,7 +278,7 @@ namespace CustomControls
         /// <param name="keyName"> Name of the Key (e.i. Fire)</param>
         /// <param name="primaryKey"> Primary Key to use</param>
         /// <param name="secondaryKey"> (Optional) Secondary key</param>
-        public void ChangeKey(string keyName, string primaryKey, string secondaryKey)
+        public void ChangeKey(string keyName, KeyCode primaryKey, KeyCode secondaryKey)
         {
             if (sal.KeyExists(file, keyName))
             {
@@ -278,7 +286,7 @@ namespace CustomControls
                 if (isKey(primaryKey))
                 {
                     // Checks if the secondary key is valid
-                    if (secondaryKey != "" && isKey(secondaryKey))
+                    if (isKey(secondaryKey))
                     {
                         sal.CreateNodeKey(file, keyName, primaryKey, secondaryKey, "change");
                     }

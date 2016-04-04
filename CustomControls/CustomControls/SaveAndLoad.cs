@@ -14,16 +14,23 @@ namespace CustomControls
 
     public class SaveAndLoad
     {
-        public string fullPath = Application.dataPath + "/";
+        public string fullPath;
 
         // Returns true if file exists in dataPath, returns false if not
         public bool FileExists(string fileName)
         {
 #if UNITY_IOS
             fullPath = Application.persistentDataPath + "/";
+#elif UNITY_EDITOR
+            bool containsAsset = fullPath.Contains("Assets");
+            if (!containsAsset)
+            {
+                fullPath = Application.dataPath + "/Assets/";
+            }
 #else
             fullPath = Application.dataPath + "/";
 #endif
+
             if (File.Exists(fullPath + fileName + ".json"))
             {
                 return true;
@@ -73,11 +80,11 @@ namespace CustomControls
 
         // Creates a Node in the JSON file with a value
         // Note: Any nodeName that doesn't exist will be created
-        public void CreateNodeKey(string fileName, string keyName, string primaryValue, string type)
+        public void CreateNodeKey(string fileName, string keyName, KeyCode primaryValue, string type)
         {
             JSONNode data = GetNodeAuto(fileName);
 
-            data["custom_controls"][keyName]["primary"] = primaryValue;
+            data["custom_controls"][keyName]["primary"] = primaryValue.ToString();
             data["custom_controls"][keyName].Remove("secondary");
 
             // Inputting Data in variable in order to format/indent it
@@ -89,9 +96,9 @@ namespace CustomControls
             File.WriteAllText(fullPath + fileName + ".json", fileCnt);
 
             //Testing if node was created
-            if (GetNodeAuto(fileName)["custom_controls"][keyName]["primary"].ToString().Replace("\"", "") == primaryValue)
+            if (GetNodeAuto(fileName)["custom_controls"][keyName]["primary"].ToString().Replace("\"", "") == primaryValue.ToString())
             {
-                CustomControls.Log("Successfully " + type + "ed " + keyName + " with Primary " + primaryValue + "!", "normal");
+                CustomControls.Log("Successfully " + type + "ed " + keyName + " with Primary " + primaryValue.ToString() + "!", "normal");
             }
             else
             {
@@ -101,13 +108,13 @@ namespace CustomControls
 
         // Creates a Node in the JSON file with a value
         // Note: Any nodeName that doesn't exist will be created
-        public void CreateNodeKey(string fileName, string keyName, string primaryValue, string secondaryValue, string type)
+        public void CreateNodeKey(string fileName, string keyName, KeyCode primaryValue, KeyCode secondaryValue, string type)
         {
             JSONNode data = GetNodeAuto(fileName);
 
-            data["custom_controls"][keyName]["primary"] = primaryValue;
+            data["custom_controls"][keyName]["primary"] = primaryValue.ToString();
 
-            data["custom_controls"][keyName]["secondary"] = secondaryValue;
+            data["custom_controls"][keyName]["secondary"] = secondaryValue.ToString();
 
             // Inputting Data in variable in order to format/indent it
             string fileCnt = data.ToString();
@@ -118,12 +125,12 @@ namespace CustomControls
             File.WriteAllText(fullPath + fileName + ".json", fileCnt);
 
             //Testing if node was created
-            if (GetNodeAuto(fileName)["custom_controls"][keyName]["primary"].ToString().Replace("\"", "") == primaryValue)
+            if (GetNodeAuto(fileName)["custom_controls"][keyName]["primary"].ToString().Replace("\"", "") == primaryValue.ToString())
             {
-                if (GetNodeAuto(fileName)["custom_controls"][keyName]["secondary"].ToString().Replace("\"", "") == secondaryValue)
+                if (GetNodeAuto(fileName)["custom_controls"][keyName]["secondary"].ToString().Replace("\"", "") == secondaryValue.ToString())
                 {
 
-                    CustomControls.Log("Successfully " + type + "ed " + keyName + " with Primary " + primaryValue + " and Secondary " + secondaryValue + "!", "normal");
+                    CustomControls.Log("Successfully " + type + "ed " + keyName + " with Primary " + primaryValue.ToString() + " and Secondary " + secondaryValue.ToString() + "!", "normal");
                 }
                 else
                 {
