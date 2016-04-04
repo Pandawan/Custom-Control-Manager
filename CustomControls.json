@@ -1,8 +1,9 @@
 {
+  "_comments": "Note: This is an example of the config file. You can import this file into any game now!",
   "custom_controls": {
     "Fire": {
       "primary": "Return",
-	  "secondary": "Space"
+      "secondary": "Space"
     }
   }
 }
