@@ -1,0 +1,8 @@
+{
+  "custom_controls": {
+    "Fire": {
+      "primary": "Return",
+	  "secondary": "Space"
+    }
+  }
+}
