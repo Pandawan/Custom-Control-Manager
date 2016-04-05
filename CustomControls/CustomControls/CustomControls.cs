@@ -49,8 +49,6 @@ namespace CustomControls
                 sal.CreateFile(file);
 
 
-            AddKey("test", KeyCode.Return, KeyCode.Space);
-
         }
 
         /// <summary>
