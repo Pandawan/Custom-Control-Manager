@@ -42,12 +42,10 @@ namespace CustomControls
 
         void Start()
         {
-            sal.fullPath = Application.dataPath + "/";
 
             // Check if file exists
             if (!sal.FileExists(file))
                 sal.CreateFile(file);
-
 
         }
 

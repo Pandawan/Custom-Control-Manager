@@ -12,8 +12,15 @@ namespace CustomControls {
         string primaryKey;
         string secondaryKey;
 
+        string currentKeyNameChange;
+        string primaryKeyChange;
+        string secondaryKeyChange;
+
         bool error;
         string errorCode;
+
+        bool errorChange;
+        string errorCodeChange;
 
         bool errorFile;
         string errorCodeFile;
@@ -87,6 +94,66 @@ namespace CustomControls {
                 {
                     errorCode = "Key Name is invalid!";
                     error = true;
+                }
+            }
+
+            GUILayout.Label("Change Key", EditorStyles.boldLabel);
+            currentKeyNameChange = EditorGUILayout.TextField("Key Name", currentKeyNameChange);
+            primaryKeyChange = EditorGUILayout.TextField("Primary Key", primaryKeyChange);
+            secondaryKeyChange = EditorGUILayout.TextField("Secondary Key", secondaryKeyChange);
+
+            if (errorChange)
+                EditorGUILayout.HelpBox(errorCodeChange, MessageType.Error);
+
+            if (GUILayout.Button("Change Key"))
+            {
+                if (!sal.FileExists(myTarget.file))
+                    sal.CreateFile(myTarget.file);
+
+                // Check if there is a Key Name
+                if (currentKeyNameChange != "" & currentKeyNameChange != " " && currentKeyNameChange != null)
+                {
+
+                    KeyCode primKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), primaryKeyChange);
+
+                    // Check if Primary Key is valid
+                    if (myTarget.isKey(primKeyCode))
+                    {
+                        // Check if there's a Secondary Key
+                        if (secondaryKeyChange != null && secondaryKeyChange != "" && secondaryKeyChange != " ")
+                        {
+                            KeyCode secKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), secondaryKeyChange);
+
+                            // Check if the Secondary Key is valid
+                            if (myTarget.isKey(secKeyCode))
+                            {
+                                myTarget.ChangeKey(currentKeyNameChange, primKeyCode, secKeyCode);
+
+                                errorChange = false;
+                            }
+                            else
+                            {
+                                errorCodeChange = "Secondary Key is invalid!";
+                                errorChange = true;
+                            }
+                        }
+                        // No Secondary Key, add with only one
+                        else
+                        {
+                            myTarget.ChangeKey(currentKeyNameChange, primKeyCode);
+                            errorChange = false;
+                        }
+                    }
+                    else
+                    {
+                        errorCodeChange = "Primary Key is invalid!";
+                        errorChange = true;
+                    }
+                }
+                else
+                {
+                    errorCodeChange = "Key Name is invalid!";
+                    errorChange = true;
                 }
             }
 
