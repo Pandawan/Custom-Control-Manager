@@ -40,6 +40,11 @@ namespace CustomControls
         public string file = "CustomControls";
 
 
+        // Used for GetAxis
+        List<string> key1s = new List<string>();
+        List<string> key2s = new List<string>();
+        List<float> returnKey = new List<float>();
+
         void Start()
         {
 
@@ -47,6 +52,28 @@ namespace CustomControls
             if (!sal.FileExists(file))
                 sal.CreateFile(file);
 
+        }
+        
+        void Update()
+        {
+            if (key1s.Count != 0)
+            {
+                for (int i = 0; i < key1s.Count; i++)
+                {
+                    if (OnKey(key1s[i]))
+                    {
+                        returnKey[i] = 1;
+                    }
+                    else if (OnKey(key2s[i]))
+                    {
+                        returnKey[i] = -1;
+                    }
+                    else
+                    {
+                        returnKey[i] = 0;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -179,6 +206,23 @@ namespace CustomControls
             {
                 return false;
             }
+        }
+        
+         /// <summary>
+        /// Returns +1, 0, -1 based on the key given
+        /// </summary>
+        /// <param name="key1"> The positive key given (returns +1) </param>
+        /// <param name="key2"> The negative key given (returns -1)</param>
+        public float GetAxis (string key1, string key2)
+        {
+            if (!key1s.Contains(key1))
+            {
+                key1s.Add(key1);
+                key2s.Add(key2);
+                returnKey.Add(0);
+            }
+
+            return returnKey[key1s.IndexOf(key1)];
         }
 
         /// <summary>
