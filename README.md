@@ -1,6 +1,6 @@
 #Information
 
-Custom Control Manager by PandawanFr. Current Version: 1.2
+Custom Control Manager by PandawanFr. Current Version: 1.3.0
 
 This is an Input/Control manager for Unity 5. It creates JSON files which you can import into other games!
 It has an easy to use API and allows to change, add or remove keys in real time so you can make your own control menu in game!
